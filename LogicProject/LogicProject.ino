@@ -19,6 +19,7 @@ int right;
 
 Motion motion;  
 Ir ir;
+//shwehy
 void setup() {
   Serial.begin(9600);
   motion.init();
@@ -82,4 +83,3 @@ void checkLine(){
      Serial.println("WTF?");
   }
 }
-
