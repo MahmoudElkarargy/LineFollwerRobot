@@ -9,13 +9,13 @@
 class Motion
 {
   public:
-  void forward();
-  void backward();
-  void right();
-  void left();
-  void Stop();
-  void init();
-  void avoid();
+    void forward();
+    void backward();
+    void right();
+    void left();
+    void Stop();
+    void init();
+    void avoid();
 };
 #endif // MOTION_H
 

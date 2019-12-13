@@ -9,14 +9,14 @@
 class Ir
 {
   public:
-  void init();
-  void printReadings();
-  int getLeftReadings();
-  int getCenterReadings();
-  int getRightReadings();
-  int left;
-  int right;
-  int center;
+    void init();
+    void printReadings();
+    int getLeftReadings();
+    int getCenterReadings();
+    int getRightReadings();
+    int left;
+    int right;
+    int center;
 };
 #endif // IR_H
 
