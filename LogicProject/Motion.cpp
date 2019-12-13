@@ -45,5 +45,24 @@ void Motion:: Stop(){
   analogWrite(ML1,0);
   analogWrite(ML2,0);
 }
-
+void Motion:: avoid(){
+  Stop();
+  delay(100);
+  backward();
+  delay(300);
+  left();
+  delay(500);
+  forward();
+  delay(1000);
+  right();
+  delay(500);
+  forward();
+  delay(3000);
+  right();
+  delay(500);
+  forward();
+  delay(1000);
+  left();
+  delay(500);
+}
 

@@ -15,6 +15,7 @@ class Motion
   void left();
   void Stop();
   void init();
+  void avoid();
 };
 #endif // MOTION_H
 
