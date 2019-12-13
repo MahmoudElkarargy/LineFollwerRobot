@@ -26,12 +26,12 @@ void setup() {
 }
 
 void loop() {
-//  motion.forward();
-//left = ir.getLeftReadings();
-//center = ir.getCenterReadings();
-//right = ir.getRightReadings();
-//  checkLine();
-  
+//  motion.left();
+left = ir.getLeftReadings();
+center = ir.getCenterReadings();
+right = ir.getRightReadings();
+  checkLine();
+//  ir.printReadings();
 }
 
 
@@ -39,29 +39,29 @@ void loop() {
 
 
 void checkLine(){
-  //HIGH --> White
+  //HIGH --> Black
   // W B W
-  if(left == HIGH && center == LOW && right == HIGH){
+  if(left == LOW && center == HIGH && right == LOW){
      motion.forward();
      Serial.println("Case Forward");
   }
   //W B B
-  else if(left == HIGH && center == LOW && right == LOW){
+  else if(left == LOW && center == HIGH && right == HIGH){
      motion.right();
      Serial.println("Case Right");
   }
   //B B W
-  else if(left == LOW && center == LOW && right == HIGH){
+  else if(left == HIGH && center == HIGH && right == LOW){
      motion.left();
      Serial.println("Case left");
   }
   //B B B
-  else if(left == LOW && center == LOW && right == LOW){
+  else if(left == HIGH && center == HIGH && right == HIGH){
      motion.Stop();
      Serial.println("Case Stop");
   }
   //W W W
-  else if(left == HIGH && center == HIGH && right == HIGH){
+  else if(left == LOW && center == LOW && right == LOW){
      motion.forward();
      Serial.println("Case Gap");
   }
@@ -72,12 +72,12 @@ void checkLine(){
      Serial.println("Case hard right");
   }
   //B W W
-  else if(left == LOW && center == HIGH && right == HIGH){
+  else if(left == HIGH && center == LOW && right == LOW){
      motion.left();
      Serial.println("Case hard left");
   }
   //B W B
-  else if(left == HIGH && center == HIGH && right == LOW){
+  else if(left == LOW && center == LOW && right == HIGH){
      motion.Stop();
      Serial.println("WTF?");
   }

@@ -4,7 +4,7 @@
 #define MR2 5
 #define ML1 2
 #define ML2 3
-#define Speed 100
+#define Speed 60
 
 class Motion
 {
