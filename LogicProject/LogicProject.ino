@@ -12,6 +12,9 @@
 #define LCD5 33
 #define LCD6 35
 
+long duration;
+int distance;
+
 int left;
 int center;
 int right;
@@ -20,15 +23,20 @@ int distanceUpper;
 
 Motion motion;
 Ir ir;
-UltraSonic lowerUltraSonic;
-UltraSonic upperUltraSonic;
+//UltraSonic lowerUltraSonic;
+//UltraSonic upperUltraSonic;
 
 void setup() {
   Serial.begin(9600);
   motion.init();
   ir.init();
-  lowerUltraSonic.init(6, 7);
-  upperUltraSonic.init(9, 8);
+  //  lowerUltraSonic.init(6, 7);
+  //  upperUltraSonic.init(9, 8);
+  pinMode(7, OUTPUT); // Sets the trigPin as an Output
+  pinMode(6, INPUT); // Sets the echoPin as an Input
+  pinMode(8, OUTPUT); // Sets the trigPin as an Output
+  pinMode(9, INPUT); // Sets the echoPin as an Input
+
 }
 
 void loop() {
@@ -36,25 +44,35 @@ void loop() {
   left = ir.getLeftReadings();
   center = ir.getCenterReadings();
   right = ir.getRightReadings();
-  checkLine();
   //  ir.printReadings();
 
-  distanceLower = lowerUltraSonic.returnDistance();
-  distanceUpper = upperUltraSonic.returnDistance();
-  
+  //  distanceLower = lowerUltraSonic.returnDistance();
+  //  distanceUpper = upperUltraSonic.returnDistance();
+
+  distanceLower = getDistance(7, 6);
   Serial.print("Distance lower: ");
   Serial.println(distanceLower);
+
+  distanceUpper = getDistance(8, 9);
 
   Serial.print("Distance upper: ");
   Serial.println(distanceUpper);
 
-//  if(distanceLower > 5 && distanceUpper > 5){
-//    //avoid
-//    motion.avoid();
+//  if (distanceLower < 5 && distanceUpper < 5) {
+    //avoid
+//    Serial.println("avoid");
+    //      motion.avoid();
+//    motion.Stop();
+//    delay(5000);
 //  }
-//  else if(distanceLower > 5){
-//    //catch
-//    
+//  else if (distanceLower < 5) {
+    //catch
+//    Serial.println("catch");
+
+//  }
+//  else {
+    checkLine();
+
 //  }
 }
 
@@ -105,5 +123,23 @@ void checkLine() {
     motion.Stop();
     Serial.println("WTF?");
   }
+
+
 }
 
+int getDistance(int trigPin, int echoPin) {
+  digitalWrite(trigPin, LOW);
+  delayMicroseconds(2);
+  // Sets the trigPin on HIGH state for 10 micro seconds
+  digitalWrite(trigPin, HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trigPin, LOW);
+  // Reads the echoPin, returns the sound wave travel time in microseconds
+  duration = pulseIn(echoPin, HIGH);
+  // Calculating the distance
+  distance = duration * 0.034 / 2;
+  // Prints the distance on the Serial Monitor
+  //  Serial.print("Distance: ");
+  //  Serial.println(distance);
+  return distance;
+}

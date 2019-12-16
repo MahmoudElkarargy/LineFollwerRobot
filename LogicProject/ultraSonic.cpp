@@ -17,6 +17,7 @@ int UltraSonic:: returnDistance() {
   // Calculating the distance
   distance = duration * 0.034 / 2;
   // Prints the distance on the Serial Monitor
+  Serial.println(distance);
   return distance;
 }
 
