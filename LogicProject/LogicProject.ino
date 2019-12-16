@@ -1,6 +1,5 @@
 #include "Motion.h"
 #include "IR.h"
-#include "ultraSonic.h"
 
 
 #define Signal1 10
@@ -23,15 +22,11 @@ int distanceUpper;
 
 Motion motion;
 Ir ir;
-//UltraSonic lowerUltraSonic;
-//UltraSonic upperUltraSonic;
 
 void setup() {
   Serial.begin(9600);
   motion.init();
   ir.init();
-  //  lowerUltraSonic.init(6, 7);
-  //  upperUltraSonic.init(9, 8);
   pinMode(7, OUTPUT); // Sets the trigPin as an Output
   pinMode(6, INPUT); // Sets the echoPin as an Input
   pinMode(8, OUTPUT); // Sets the trigPin as an Output
@@ -46,34 +41,30 @@ void loop() {
   right = ir.getRightReadings();
   //  ir.printReadings();
 
-  //  distanceLower = lowerUltraSonic.returnDistance();
-  //  distanceUpper = upperUltraSonic.returnDistance();
-
   distanceLower = getDistance(7, 6);
-  Serial.print("Distance lower: ");
-  Serial.println(distanceLower);
+//  Serial.print("Distance lower: ");
+//  Serial.println(distanceLower);
 
   distanceUpper = getDistance(8, 9);
 
-  Serial.print("Distance upper: ");
-  Serial.println(distanceUpper);
+//  Serial.print("Distance upper: ");
+//  Serial.println(distanceUpper);
 
-//  if (distanceLower < 5 && distanceUpper < 5) {
+  if (distanceLower < 5 && distanceUpper < 5) {
+        //catch
+    Serial.println("catch");
+  }
+  else if (distanceLower < 5) {
     //avoid
-//    Serial.println("avoid");
-    //      motion.avoid();
+    Serial.println("avoid");
+          motion.avoid();
 //    motion.Stop();
-//    delay(5000);
-//  }
-//  else if (distanceLower < 5) {
-    //catch
-//    Serial.println("catch");
 
-//  }
-//  else {
+  }
+  else {
     checkLine();
 
-//  }
+  }
 }
 
 
