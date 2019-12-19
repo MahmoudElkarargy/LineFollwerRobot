@@ -59,8 +59,7 @@ void loop() {
     //    delay(9991000);
 
     gripper.openGripper();
-    isCatched = true;
-    while (distanceLower > 4 && distanceUpper > 4) {
+    while (distanceLower > 3 && distanceUpper > 3) {
       checkLine();
       distanceLower = getDistance(8, 9);
       distanceUpper = getDistance(7, 6);
@@ -69,7 +68,34 @@ void loop() {
     //    motion.forward();
     //    delay(700);
     motion.Stop();
-    delay(9991000);
+    gripper.closeGripper();
+    motion.rightGripper();
+    delay(500);
+    while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
+      checkLine();
+      motion.rightGripper();
+    }
+    motion.Stop();
+    delay(100);
+    motion.forward();
+    delay(300);
+    motion.Stop();
+    gripper.openGripper();
+    motion.backward();
+    delay(300);
+    motion.leftGripper();
+    delay(500);
+    while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
+      checkLine();
+      motion.leftGripper();
+    }
+    
+    motion.Stop();
+    delay(100);
+    motion.right();
+    delay(100);
+
+      isCatched = true;
 
 
   }

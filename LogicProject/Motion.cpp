@@ -16,6 +16,7 @@ void Motion:: forward() {
   analogWrite(ML2, 0);
 }
 void Motion:: backward() {
+  Speed =50;
   analogWrite(MR1, 0);
   analogWrite(MR2, Speed);
 
@@ -24,6 +25,7 @@ void Motion:: backward() {
 }
 
 void Motion:: right() {
+  Speed = 50;
   analogWrite(MR1, Speed);
   analogWrite(MR2, 0);
 
@@ -43,6 +45,22 @@ void Motion:: Stop() {
   analogWrite(MR2, 0);
 
   analogWrite(ML1, 0);
+  analogWrite(ML2, 0);
+}
+void Motion:: rightGripper(){
+  Speed = 100;
+  analogWrite(MR1, Speed);
+  analogWrite(MR2, 0);
+
+  analogWrite(ML1, 0);
+  analogWrite(ML2, Speed);
+}
+void Motion:: leftGripper(){
+  Speed =100;
+  analogWrite(MR1, 0);
+  analogWrite(MR2, Speed);
+
+  analogWrite(ML1, Speed);
   analogWrite(ML2, 0);
 }
 void Motion:: avoid() {

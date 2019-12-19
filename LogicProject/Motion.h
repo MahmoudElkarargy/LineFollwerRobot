@@ -15,6 +15,8 @@ class Motion
     void Stop();
     void init();
     void avoid();
+    void rightGripper();
+    void leftGripper();
     int Speed =50;
 };
 #endif // MOTION_H
