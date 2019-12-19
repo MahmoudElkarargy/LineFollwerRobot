@@ -4,7 +4,6 @@
 #define MR2 5
 #define ML1 2
 #define ML2 3
-#define Speed 60
 
 class Motion
 {
@@ -16,6 +15,7 @@ class Motion
     void Stop();
     void init();
     void avoid();
+    int Speed =50;
 };
 #endif // MOTION_H
 
