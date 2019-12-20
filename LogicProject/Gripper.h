@@ -5,10 +5,14 @@
 class Grip
 {
   public:
-    void init();
-    int Signal =10;
+    void init(int);
+    int Signal ;
+    void initUp(int);
     void openGripper();
     void closeGripper();
+    void openGripperUp();
+    void closeGripperUp();
+    
     
 };
 #endif // GRIPPER_H

@@ -1,15 +1,7 @@
 #include "Motion.h"
 #include "IR.h"
 #include "Gripper.h"
-
-#define Signal1 10
-#define Signal2 11
-#define LCD1 26
-#define LCD2 A0
-#define LCD3 29
-#define LCD4 31
-#define LCD5 33
-#define LCD6 35
+#include "lcd.h"
 
 long duration;
 int distance;
@@ -20,89 +12,79 @@ int right;
 int distanceLower;
 int distanceUpper;
 
-bool isCatched = false;
 
 Motion motion;
 Ir ir;
-Grip gripper;
+Grip gripperOpenClose;
+Grip gripperUp;
+
+LiquidCrystalDisplay LCD;
+bool flag = true;
+bool flagObj = true;
 
 void setup() {
   Serial.begin(9600);
   motion.init();
   ir.init();
-  gripper.init();
+  gripperOpenClose.init(10);
+  gripperUp.initUp(11);
+  LCD.init();
   pinMode(7, OUTPUT); // Sets the trigPin as an Output
   pinMode(6, INPUT); // Sets the echoPin as an Input
   pinMode(8, OUTPUT); // Sets the trigPin as an Output
   pinMode(9, INPUT); // Sets the echoPin as an Input
 
+
 }
 
 void loop() {
-  //  motion.left();
-
   //  ir.printReadings();
 
-  distanceLower = getDistance(8, 9);
+  distanceLower = getDistance(7, 6);
   Serial.print("Distance lower: ");
   Serial.println(distanceLower);
 
-  distanceUpper = getDistance(7, 6);
+  distanceUpper = getDistance(8, 9);
 
   Serial.print("Distance upper: ");
   Serial.println(distanceUpper);
 
-  if (distanceLower < 15 && distanceUpper < 15 && isCatched == false) {
+  if (distanceLower < 17 && distanceUpper < 17 && flag) {
     //catch
     Serial.println("catch");
+    LCD.writeonLCD("grap");
     motion.Stop();
-    //    delay(9991000);
-
-    gripper.openGripper();
-    while (distanceLower > 3 && distanceUpper > 3) {
+    gripperUp.openGripperUp();
+    delay(100);
+    gripperOpenClose.openGripper();
+    while (distanceLower > 9 ) {
+      //      LCD.writeonLCD("grap");
+      Serial.println("ana hina");
       checkLine();
-      distanceLower = getDistance(8, 9);
-      distanceUpper = getDistance(7, 6);
-      Serial.println("bt-check ya abn el 3ars");
-    }
-    //    motion.forward();
-    //    delay(700);
-    motion.Stop();
-    gripper.closeGripper();
-    motion.rightGripper();
-    delay(500);
-    while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
-      checkLine();
-      motion.rightGripper();
+      distanceLower = getDistance(7, 6);
+      distanceUpper = getDistance(8, 9);
     }
     motion.Stop();
-    delay(100);
-    motion.forward();
-    delay(300);
-    motion.Stop();
-    gripper.openGripper();
-    motion.backward();
-    delay(300);
-    motion.leftGripper();
-    delay(500);
-    while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
-      checkLine();
-      motion.leftGripper();
-    }
-    
-    motion.Stop();
-    delay(100);
-    motion.right();
-    delay(100);
-
-      isCatched = true;
-
+    gripperOpenClose.closeGripper();
+    delay(1000);
+    Serial.println("arf3");
+    gripperUp.closeGripperUp();
+    flag = false;
 
   }
-  else if (distanceLower < 10 && isCatched == false ) {
+  else if (distanceLower < 10 && flagObj) {
     //avoid
-    Serial.println("avoid");
-    //          motion.avoid();
+    //    Serial.println("avoid");
+    LCD.writeonLCD("avoid");
+    motion.avoid();
+    motion.rightfesa();
+    while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
+      //      LCD.writeonLCD("avoid");
+
+      checkLine();
+      motion.rightfesa();
+    }
+    flagObj = false;
   }
   else {
     checkLine();
@@ -124,41 +106,63 @@ void checkLine() {
   if (left == LOW && center == HIGH && right == LOW) {
     motion.forward();
     //    Serial.println("Case Forward");
+    LCD.writeonLCD("forward");
   }
   //W B B
   else if (left == LOW && center == HIGH && right == HIGH) {
     motion.right();
     //    Serial.println("Case Right");
+    LCD.writeonLCD("right");
+
   }
   //B B W
   else if (left == HIGH && center == HIGH && right == LOW) {
     motion.left();
     //    Serial.println("Case left");
+    LCD.writeonLCD("left");
+
   }
   //B B B
   else if (left == HIGH && center == HIGH && right == HIGH) {
-    motion.Stop();
-    //    Serial.println("Case Stop");
+    if (distanceLower < 15) {
+      LCD.writeonLCD("Leave object");
+      motion.Stop();
+      gripperUp.openGripperUp();
+      gripperOpenClose.openGripper();
+      motion.Stop();
+      delay(100000000);
+    }
+    else {
+      motion.forward();
+      //    Serial.println("Case Stop");
+      LCD.writeonLCD("stop");
+    }
   }
   //W W W
   else if (left == LOW && center == LOW && right == LOW) {
     motion.forward();
     //    Serial.println("Case Gap");
+    LCD.writeonLCD("forward");
+
   }
   //make sure cases
   //W W B
   else if (left == LOW && center == LOW && right == HIGH) {
     motion.right();
     //    Serial.println("Case hard right");
+    LCD.writeonLCD("right");
+
   }
   //B W W
   else if (left == HIGH && center == LOW && right == LOW) {
     motion.left();
     //    Serial.println("Case hard left");
+    LCD.writeonLCD("left");
+
   }
   //B W B
   else if (left == HIGH && center == LOW && right == HIGH) {
-    motion.Stop();
+    motion.forward();
     //    Serial.println("WTF?");
   }
 
