@@ -18,7 +18,7 @@ class Motion
     void rightGripper();
     void leftGripper();
     void rightfesa();
-    int Speed =80;
+    int Speed = 80;
     int speedLeft = 80;
 };
 #endif // MOTION_H

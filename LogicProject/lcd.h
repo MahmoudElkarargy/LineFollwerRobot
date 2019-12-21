@@ -8,10 +8,10 @@ class LiquidCrystalDisplay
 {
   public:
     void init();
-    String last ="";
+    String last = "";
     void writeonLCD(String);
 
-    
+
 };
 #endif // LCD_H
 

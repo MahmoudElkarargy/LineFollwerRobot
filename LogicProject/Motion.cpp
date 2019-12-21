@@ -63,11 +63,11 @@ void Motion:: leftGripper() {
   analogWrite(ML1, Speed);
   analogWrite(ML2, 0);
 }
-void Motion:: rightfesa(){
-  analogWrite(MR1, Speed+40);
+void Motion:: rightfesa() {
+  analogWrite(ML1, Speed + 60);
   analogWrite(MR2, 0);
 
-  analogWrite(ML1, Speed-10);
+  analogWrite(MR1, Speed - 30);
   analogWrite(ML2, 0);
 }
 void Motion:: avoid() {
@@ -75,19 +75,30 @@ void Motion:: avoid() {
   Stop();
   delay(100);
   backward();
-  delay(1000);
+  delay(150);
+  Stop();
+  delay(100);
   left();
-  delay(500);
+  delay(600);
   Stop();
   delay(100);
   forward();
-  delay(500);
+  delay(850);
   Stop();
   delay(100);
   right();
   delay(500);
   Stop();
+  delay(200);
+  forward();
+  delay(600);
+  right();
+  delay(300);
+  forward();
+  delay(200);
+  right();
+  delay(300);
+  Stop();
   delay(100);
-  
 }
 

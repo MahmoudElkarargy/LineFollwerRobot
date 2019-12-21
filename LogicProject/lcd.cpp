@@ -44,7 +44,7 @@ void LiquidCrystalDisplay:: writeonLCD(String msg) {
     lcd.clear();
     lcd.setCursor(0, 0);
     lcd.print("Avoiding ");
-    lcd.setCursor(0,1);
+    lcd.setCursor(0, 1);
     lcd.print("obstacle");
     last = "avoid";
   }

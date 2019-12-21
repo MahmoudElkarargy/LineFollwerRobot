@@ -12,8 +12,8 @@ class Grip
     void closeGripper();
     void openGripperUp();
     void closeGripperUp();
-    
-    
+
+
 };
 #endif // GRIPPER_H
 

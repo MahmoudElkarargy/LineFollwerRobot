@@ -49,7 +49,7 @@ void loop() {
   Serial.print("Distance upper: ");
   Serial.println(distanceUpper);
 
-  if (distanceLower < 17 && distanceUpper < 17 && flag) {
+  if (distanceLower < 18 && distanceUpper < 18 && flag) {
     //catch
     Serial.println("catch");
     LCD.writeonLCD("grap");
@@ -58,8 +58,6 @@ void loop() {
     delay(100);
     gripperOpenClose.openGripper();
     while (distanceLower > 9 ) {
-      //      LCD.writeonLCD("grap");
-      Serial.println("ana hina");
       checkLine();
       distanceLower = getDistance(7, 6);
       distanceUpper = getDistance(8, 9);
@@ -67,23 +65,23 @@ void loop() {
     motion.Stop();
     gripperOpenClose.closeGripper();
     delay(1000);
-    Serial.println("arf3");
     gripperUp.closeGripperUp();
     flag = false;
 
   }
   else if (distanceLower < 10 && flagObj) {
     //avoid
-    //    Serial.println("avoid");
     LCD.writeonLCD("avoid");
     motion.avoid();
     motion.rightfesa();
     while (ir.getLeftReadings() == LOW && ir.getCenterReadings() == LOW && ir.getRightReadings() == LOW) {
-      //      LCD.writeonLCD("avoid");
-
       checkLine();
       motion.rightfesa();
     }
+    motion.forward();
+    delay(200);
+    motion.left();
+    delay(300);
     flagObj = false;
   }
   else {
@@ -91,10 +89,6 @@ void loop() {
 
   }
 }
-
-
-
-
 
 void checkLine() {
   //HIGH --> Black
@@ -124,8 +118,12 @@ void checkLine() {
   }
   //B B B
   else if (left == HIGH && center == HIGH && right == HIGH) {
-    if (distanceLower < 15) {
+    if (distanceLower < 10) {
       LCD.writeonLCD("Leave object");
+      motion.Stop();
+      delay(100);
+      motion.backward();
+      delay(700);
       motion.Stop();
       gripperUp.openGripperUp();
       gripperOpenClose.openGripper();
@@ -149,6 +147,7 @@ void checkLine() {
   //W W B
   else if (left == LOW && center == LOW && right == HIGH) {
     motion.right();
+    delay(50);
     //    Serial.println("Case hard right");
     LCD.writeonLCD("right");
 
@@ -156,6 +155,7 @@ void checkLine() {
   //B W W
   else if (left == HIGH && center == LOW && right == LOW) {
     motion.left();
+    delay(50);
     //    Serial.println("Case hard left");
     LCD.writeonLCD("left");
 
@@ -163,7 +163,6 @@ void checkLine() {
   //B W B
   else if (left == HIGH && center == LOW && right == HIGH) {
     motion.forward();
-    //    Serial.println("WTF?");
   }
 
 
