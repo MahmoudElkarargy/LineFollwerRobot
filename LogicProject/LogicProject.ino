@@ -54,6 +54,10 @@ void loop() {
     Serial.println("catch");
     LCD.writeonLCD("grap");
     motion.Stop();
+    delay(100);
+    motion.backward();
+    delay(200);
+    motion.Stop();
     gripperUp.openGripperUp();
     delay(100);
     gripperOpenClose.openGripper();
@@ -127,6 +131,8 @@ void checkLine() {
       motion.Stop();
       gripperUp.openGripperUp();
       gripperOpenClose.openGripper();
+      motion.backward();
+      delay(200);
       motion.Stop();
       delay(100000000);
     }
